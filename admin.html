@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<title>ฟังใจ เจ้าของ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Prompt:wght@500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="brand"><span class="brand-mark"><i></i></span><span id="brandName">ฟังใจ · เจ้าของ</span></div></div>
+  <section id="loginBox" class="panel login">
+    <h2>เข้าสู่มุมมองเจ้าของ</h2>
+    <form id="loginForm" class="stack">
+      <div class="field"><label for="pw">รหัสผ่านเจ้าของ</label><input type="password" id="pw" autocomplete="current-password" style="background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%"></div>
+      <div class="row"><button class="btn" type="submit">เข้าสู่ระบบ</button><span class="muted" id="loginMsg"></span></div>
+    </form>
+  </section>
+  <!-- ADMIN -->
+  <section id="adminApp" class="stack" hidden>
+    <div class="panel">
+      <div class="row" style="justify-content:space-between"><h2>มุมมองเจ้าของ</h2><div class="row"><span class="chip" id="admDot" hidden></span><button class="btn ghost small" type="button" id="logoutBtn">ออกจากระบบ</button></div></div>
+      <div class="notice">ข้อความของน้องๆ เห็นเป็นรหัสสุ่ม (และชื่อเล่น ถ้าน้องใส่ไว้) ไม่มีชื่อจริงหรือบัญชีของน้อง กรุณาเก็บรหัสผ่านเจ้าของเป็นความลับ</div>
+      <div class="tabs" id="aTabs">
+        <button type="button" data-t="inbox" aria-pressed="true">ข้อความจากน้องๆ</button>
+        <button type="button" data-t="settings" aria-pressed="false">ตั้งค่าเว็บไซต์</button>
+      </div>
+    </div>
+
+    <div id="aInbox" class="stack">
+      <div class="stats" id="aStats"></div>
+      <div class="agrid">
+        <div class="panel">
+          <div class="field"><label for="aFilter">แสดง</label>
+            <select id="aFilter"><option value="all">ทั้งหมด</option><option value="urgent">ต้องดูแลด่วน</option><option value="waiting">รอเจ้าหน้าที่ตอบ</option></select>
+          </div>
+          <div class="slist" id="aList"></div>
+        </div>
+        <div class="panel" id="aDetail"><p class="muted">เลือกรายการทางซ้ายเพื่อดูข้อความ</p></div>
+      </div>
+    </div>
+
+    <div id="aSettings" class="panel" hidden>
+      <h2>ตั้งค่าเว็บไซต์</h2>
+      <p class="muted">แก้แล้วกดบันทึก ข้อความบนเว็บและคำสั่งของ AI จะเปลี่ยนทันทีสำหรับทุกคน</p>
+      <form id="setForm" class="stack">
+        <div class="field"><label for="f_siteName">ชื่อเว็บไซต์</label><input type="text" id="f_siteName" maxlength="40"></div>
+        <div class="field"><label for="f_heroTitle">หัวข้อหน้าแรก</label><input type="text" id="f_heroTitle" maxlength="120"></div>
+        <div class="field"><label for="f_heroText">คำอธิบายหน้าแรก</label><textarea id="f_heroText" maxlength="500"></textarea></div>
+        <div class="field"><label for="f_cardConsult">ข้อความบนการ์ด "ปรึกษาปัญหา"</label><input type="text" id="f_cardConsult" maxlength="200"></div>
+        <div class="field"><label for="f_cardSuggest">ข้อความบนการ์ด "เสนอคำแนะนำ"</label><input type="text" id="f_cardSuggest" maxlength="200"></div>
+        <div class="field"><label for="f_privacyNote">ข้อความเรื่องความเป็นส่วนตัว</label><textarea id="f_privacyNote" maxlength="600"></textarea><span class="hint">บอกน้องๆ ตามจริงว่าใครอ่านข้อความได้บ้าง</span></div>
+        <div class="field"><label for="f_disclaimer">คำเตือนว่าไม่ใช่นักจิตวิทยาจริง</label><textarea id="f_disclaimer" maxlength="400"></textarea></div>
+        <div class="field"><label for="f_greeting">ข้อความทักทายแรกของ AI</label><input type="text" id="f_greeting" maxlength="200"></div>
+        <div class="field"><label for="f_officerName">ชื่อที่น้องเห็นตอนคุยกับเจ้าหน้าที่</label><input type="text" id="f_officerName" maxlength="40"></div>
+        <div class="field"><label for="f_officerIntro">คำอธิบายหน้า "คุยกับเจ้าหน้าที่"</label><textarea id="f_officerIntro" maxlength="400"></textarea></div>
+        <div class="field"><label for="f_categories">หมวดเรื่องที่เสนอสภา (บรรทัดละหมวด)</label><textarea id="f_categories"></textarea></div>
+        <div class="field"><label for="f_hotlines">สายด่วน (บรรทัดละรายการ รูปแบบ ชื่อ | เบอร์)</label><textarea id="f_hotlines"></textarea><span class="hint">แสดงในหน้าแรกและตอนที่ระบบเจอเรื่องร้ายแรง</span></div>
+        <label class="switch" for="f_aiEnabled"><input type="checkbox" id="f_aiEnabled"><span><b>เปิดผู้ช่วย AI</b><span class="muted">ปิดไว้ได้ ถ้าอยากให้น้องคุยกับเจ้าหน้าที่อย่างเดียว</span></span></label>
+        <div class="field"><label for="f_aiTier">ความเร็ว AI</label>
+          <select id="f_aiTier"><option value="default">ปกติ (คิดนานกว่า ตอบรอบคอบ)</option><option value="quick">เร็ว (ตอบทันที เหมาะกับแชทสั้นๆ)</option></select>
+        </div>
+        <div class="field"><label for="f_persona">คำสั่งบุคลิกของ AI "พี่"</label><textarea id="f_persona" style="min-height:300px"></textarea><span class="hint">ระบบจะเติมสายด่วนและแท็กประเมินความเสี่ยงต่อท้ายให้เอง ไม่ต้องใส่</span></div>
+        <div class="row">
+          <button class="btn" type="submit" id="setSave">บันทึก</button>
+          <button class="btn ghost" type="button" id="setReset">คืนค่าเริ่มต้น</button>
+          <span class="muted" id="setMsg"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+<script src="config.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

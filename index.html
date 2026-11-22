@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<title>ฟังใจ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Prompt:wght@500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><span class="brand-mark"><i></i></span><span id="brandName">ฟังใจ</span></div>
+    <span class="chip" id="saveState" hidden></span>
+  </div>
+
+  <nav class="nav" id="nav" aria-label="เมนู">
+    <a href="#home" data-v="home">หน้าแรก</a>
+    <a href="#consult" data-v="consult">ปรึกษาปัญหา</a>
+    <a href="#suggest" data-v="suggest">เสนอแนะสภา</a>
+    <a href="#officer" data-v="officer">คุยกับเจ้าหน้าที่<span class="dot" id="offDot" hidden>0</span></a>
+  </nav>
+
+  <div class="banner" id="banner" hidden></div>
+
+  <!-- HOME -->
+  <section data-view="home" class="col">
+    <div class="hero">
+      <h1 id="heroTitle">มีอะไรในใจ เล่าให้ฟังได้</h1>
+      <p id="heroText"></p>
+    </div>
+    <div class="modes">
+      <a class="mode primary" href="#consult">
+        <span class="tag">อยากระบาย / ขอคำแนะนำ</span>
+        <b>ปรึกษาปัญหา</b>
+        <span id="cardConsult"></span>
+        <span class="go">เริ่มคุย →</span>
+      </a>
+      <a class="mode" href="#suggest">
+        <span class="tag">อยากให้สภาปรับปรุงบางอย่าง</span>
+        <b>เสนอคำแนะนำ</b>
+        <span id="cardSuggest"></span>
+        <span class="go">เขียนข้อเสนอ →</span>
+      </a>
+    </div>
+
+    <div class="panel">
+      <h2>ความเป็นส่วนตัวของคุณ</h2>
+      <label class="switch" for="anon">
+        <input type="checkbox" id="anon" checked>
+        <span><b>ไม่ระบุตัวตน</b><span class="muted">เปิดไว้ จะไม่ส่งชื่อเล่นไปกับข้อความ เจ้าหน้าที่เห็นแค่รหัสสุ่มของคุณ</span></span>
+      </label>
+      <div class="field" id="nickBox" hidden>
+        <label for="nick">ชื่อเล่น (ถ้าอยากให้เรียก)</label>
+        <input id="nick" type="text" maxlength="30" placeholder="เช่น ฟ้า" autocomplete="off">
+      </div>
+      <p class="muted" id="privState"></p>
+      <div class="row"><button class="btn ghost small" type="button" id="wipeBtn">ไม่ใช่เครื่องของฉัน / ล้างข้อมูลในเครื่องนี้</button></div>
+      <p class="muted" id="wipeNote" hidden></p>
+      <div class="notice"><b>บอกกันตรงๆ:</b> <span id="privacyNote"></span></div>
+    </div>
+
+    <div class="panel plain">
+      <h3>ถ้าต้องการความช่วยเหลือด่วน</h3>
+      <div class="hotline" id="homeHot" style="margin-top:0"></div>
+    </div>
+    <footer id="footDisclaimer"></footer>
+  </section>
+
+  <!-- CONSULT -->
+  <section data-view="consult" class="col" hidden>
+    <div class="panel">
+      <h2>ปรึกษาปัญหา</h2>
+      <div id="gate" class="stack">
+        <div class="notice"><b>ก่อนเริ่ม</b><br><span id="gateDisclaimer"></span> ถ้าเรื่องที่คุยหนักมากหรือเกี่ยวกับการทำร้ายตัวเอง เราจะแนะนำให้ติดต่อแพทย์หรือสายด่วนทันที</div>
+        <label class="switch" for="agree">
+          <input type="checkbox" id="agree">
+          <span>เข้าใจแล้ว และรับทราบว่าเจ้าของเว็บอ่านข้อความได้ (ไม่เห็นชื่อจริง)</span>
+        </label>
+        <div class="row"><button class="btn warm" id="start" disabled>เริ่มเรื่องใหม่</button><span class="muted" id="whoami"></span></div>
+        <div id="prevBox" class="stack" hidden>
+          <h3>คุยต่อจากครั้งก่อน</h3>
+          <div class="stack" id="prevList"></div>
+        </div>
+      </div>
+      <div id="chatBox" hidden class="stack">
+        <div id="crisisBox" hidden></div>
+        <div class="chat" id="chat" aria-live="polite"></div>
+        <form class="compose" id="chatForm">
+          <input id="chatInput" type="text" maxlength="1000" placeholder="พิมพ์สิ่งที่อยากเล่า…" autocomplete="off" aria-label="ข้อความ">
+          <button class="btn" type="submit" id="sendBtn">ส่ง</button>
+          <button class="btn ghost" type="button" id="stopBtn" hidden>หยุด</button>
+        </form>
+        <div class="row"><button class="btn ghost small" id="endBtn" type="button">จบการคุยนี้</button><span class="muted" id="chatNote"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUGGEST -->
+  <section data-view="suggest" class="col" hidden>
+    <div class="panel">
+      <h2>เสนอคำแนะนำถึงสภา</h2>
+      <p class="muted">ไอเดียของคุณจะถูกรวบรวมและนำไปพูดคุยในสภา</p>
+      <form id="suggestForm" class="stack">
+        <div class="field"><label for="sCat">เรื่อง</label><select id="sCat"></select></div>
+        <div class="field"><label for="sMsg">ข้อเสนอของคุณ</label><textarea id="sMsg" maxlength="1500" required placeholder="เล่าสิ่งที่อยากให้เปลี่ยน และเหตุผลสั้นๆ"></textarea></div>
+        <p class="muted" id="sWho"></p>
+        <div class="row"><button class="btn" type="submit">ส่งข้อเสนอ</button></div>
+      </form>
+      <div id="suggestDone" class="notice" hidden><b>ได้รับแล้ว</b> ขอบคุณที่ช่วยกันคิด ข้อเสนอถูกส่งถึงสภาแล้ว <button class="btn ghost small" id="sAgain" type="button" style="margin-left:8px">เขียนอีกเรื่อง</button></div>
+    </div>
+    <div class="panel plain" id="mySugBox" hidden>
+      <h3>ข้อเสนอที่คุณส่งไปแล้ว</h3>
+      <div class="stack" id="mySug"></div>
+    </div>
+  </section>
+
+  <!-- OFFICER -->
+  <section data-view="officer" class="col" hidden>
+    <div class="panel">
+      <h2>คุยกับ<span id="officerTitle">เจ้าหน้าที่สภา</span></h2>
+      <p class="muted" id="officerIntro"></p>
+      <div class="chat" id="offLog" aria-live="polite"></div>
+      <form class="stack" id="officerForm">
+        <div class="field"><label for="oMsg">ข้อความถึงเจ้าหน้าที่</label><textarea id="oMsg" maxlength="1500" required placeholder="เล่าสั้นๆ ได้เลย"></textarea></div>
+        <p class="muted" id="oWho"></p>
+        <div class="row"><button class="btn" type="submit">ส่งถึงเจ้าหน้าที่</button></div>
+      </form>
+    </div>
+  </section>
+
+
+</div>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
